@@ -5,7 +5,10 @@ text:str = input("Please input a string: ")
 output:str = ''
 
 #process
-for i in range(len(text) - 1, -1, -1):
-    output += text[i]
+# for i in range(len(text) - 1, -1, -1):
+#     output += text[i]
+    
+for char in text:
+    output = char + output
 
 print(output)
