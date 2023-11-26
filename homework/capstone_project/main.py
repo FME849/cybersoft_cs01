@@ -31,6 +31,14 @@ spaceship_limit = {
     "right": SCREEN_WIDTH - spaceship_rect.width
 }
 
+bullet_draw = pygame.image.load('img/bullet.png')
+bullet = pygame.transform.scale(bullet_draw, (80, 280 / 191 * 80))
+bullet_rect = bullet.get_rect()
+bullet_hidden = (-bullet_rect.width, SCREEN_HEIGHT)
+bullet_rect.x = bullet_hidden[0]
+bullet_rect.y = bullet_hidden[1]
+bullet_veloc = 15
+
 env_sound = pygame.mixer.Sound('sound/nhac_nen.wav')
 env_sound.play(-1)
 
@@ -47,7 +55,8 @@ while running:
                 running = False
             if event.key == pygame.K_SPACE:
                 if game_start:
-                    print('space')
+                    bullet_rect.x = spaceship_rect.x + spaceship_rect.width / 2 - bullet_rect.width / 2
+                    bullet_rect.y = spaceship_rect.y - bullet_rect.height
                 else:
                     game_start = True
     
@@ -58,7 +67,11 @@ while running:
         if keys[pygame.K_RIGHT]:
             spaceship_rect.x = spaceship_limit['right'] if spaceship_rect.x >= spaceship_limit['right'] else spaceship_rect.x + spaceship_veloc
 
-
+    if bullet_rect.y < -bullet_rect.height:
+        bullet_rect.x = bullet_hidden[0]
+        bullet_rect.y = bullet_hidden[1]
+    else:
+        bullet_rect.y -= bullet_veloc
 
     WINDOW.blit(bg_img, IDLE_COORDINATOR)
 
@@ -66,6 +79,7 @@ while running:
         WINDOW.blit(start_game_text, (text_01_x, text_01_y))
 
     WINDOW.blit(spaceship, (spaceship_rect.x, spaceship_rect.y))
+    WINDOW.blit(bullet, (bullet_rect.x, bullet_rect.y))
 
     pygame.display.flip()
     clock.tick(60)
