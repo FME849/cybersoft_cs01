@@ -1,3 +1,4 @@
+import json
 def add_task():
     task_name = input("Input task name: ")
     task = {
@@ -20,6 +21,14 @@ def check_task():
             task["status"] = task_status[1]
     display_task_list()
 
+def save_task_list():
+    with open('todo_list.json', 'w') as file:
+        json.dump(task_list, file)
+
+def load_task_list():
+    with open('todo_list.json', 'r') as file:
+        return json.load(file)
+
 running = True
 print('--- To do app ---')
 task_list = []
@@ -29,7 +38,9 @@ while running:
           1/ Add task
           2/ Display task
           3/ Check task
-          4/ Exit
+          4/ Save task list
+          5/ Load task list
+          6/ Exit
     ''')
     select:int = int(input("Select function: "))
     if select == 1:
@@ -40,5 +51,10 @@ while running:
         display_task_list()
     elif select == 3:
         check_task()
-    elif (select == 4):
+    elif select == 4:
+        save_task_list()
+    elif select == 5:
+        task_list = load_task_list()
+        display_task_list()
+    elif (select == 6):
         running = False
